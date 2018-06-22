@@ -17,4 +17,6 @@ db.sqlite3
 .DS_Store
 .venv
 .statsenv
+
 prod.py
+social_auth_settings.py
