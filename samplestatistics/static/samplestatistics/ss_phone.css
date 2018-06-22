@@ -1,0 +1,43 @@
+/*
+    ss_phone.css
+*/
+
+html, body, img {
+    margin: 0;
+    border: 0;
+    padding: 0;
+}
+
+
+body {  
+}
+
+
+#body2 {
+  color: #111111;  
+}
+
+
+
+.bodytext, .bodytextno, .problemExample {
+    text-align: left;
+}
+
+.theData {
+  margin-left: 1em;
+  text-align: left;
+}
+
+.problemExample {
+  margin: 0 0 1ex 1em; 
+  text-align: left;
+}
+.guessRegion input { margin: 1em auto; width: 80%; }
+
+
+.screenOnly { display:none; }
+
+
+
+
+

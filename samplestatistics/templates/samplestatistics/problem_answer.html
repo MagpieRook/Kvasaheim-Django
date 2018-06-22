@@ -1,0 +1,30 @@
+{% extends 'samplestatistics/base.html' %}
+
+{% block content %}
+<h1>{{ problem.title }} - {{ problem.id }}</h1>
+
+{% for answer in answers %}
+    <h2>{{ answer }} - {{ answer.id }}</h2>
+    <h3>{{ answer.date }}</h3>
+    <h3>{{ answer.problem.numbers }}</h3>
+    <p>Answer: {{ answer.answer }}</p>
+    <p>Correct Answer: {{ answer.problem.answer }} - {% if answer.correct %}Correct!{% else %}Incorrect.{% endif %}</p>
+    <h3>Comments:</h3>
+    {% if answer.comments.all %}
+    {% for comment in answer.comments.all %}
+        <p>On {{ comment.date }}, {% if comment.user == user %}<b>You</b> said:{% else %}<b>{{ comment.user.first_name }} {{ comment.user.last_name }}</b> said:{% endif %} {{ comment.text }}</p>
+    {% endfor %}
+    {% else %}
+    <p>None</p>
+    {% endif %}
+    <br><br>
+    <form action="{% url 'samplestatistics:problem_answer' problem.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="{{ form.answer.name }}" id="{{ form.answer.id_for_label }}" value="{{ answer.pk }}"><br>
+        {{ form.text.errors }}
+        <p><label for="{{ form.text.id_for_label }}">Add a Comment:</label></p>
+        <p>{{ form.text }}</p>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+{% endfor %}
+{% endblock %}

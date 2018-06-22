@@ -1,0 +1,161 @@
+{% extends 'samplestatistics/base.html' %}
+
+{% block content %}
+<title>{{ problem.title }}</title>
+<h1>{{ problem.title }}</h1>
+<h2>The Problem</h2>
+<p>{{ problem.text|safe }}</p>
+<blockquote>
+    {{ probleminstance.numbers }}
+</blockquote>
+Calculate the mean value of this sample, <span class='statTerm' title="sample mean">\( \bar{x} \)</span>.
+
+
+<h2>Your Answer</h2>
+<p>In the box below, please enter the sample mean of the data given above, then click on the “Check your answer!” button. Please round your answer to the <b>ten-thousandths place.</b></p>
+
+{% if user.is_authenticated %}
+
+<form action="{% url 'samplestatistics:problem_detail' problem.id %}" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="problem_instance" id="problem_instance" value="{{ probleminstance.pk }}">
+    {{ form.answer.errors }}
+    <label for="{{ form.answer.id_for_label }}">Answer</label>
+    {{ form.answer }}
+    <input type="submit" value="Submit">
+</form>
+
+{% endif %}
+
+<!-- Below is straight from a specific problem in Kvaseheim -->
+
+
+<!-- Get Help -->
+<div id="getHelp" class="subSections">
+<h2>Assistance</h2>
+
+
+
+<!-- Show the Formula -->
+<div id="showFormula" style="display:block;">
+  <p class="bodytextno"><span title="Click to show the formula" onclick="toggleFormula();" style="text-decoration:underline; cursor:pointer;">Show Formula</span></p>
+</div>
+
+<div id="hideFormula" style="display: none; padding-bottom: 3em;">
+  <p class="bodytextno"><span title="Click to hide the formula" onclick="toggleFormula();" style="text-decoration:underline; cursor:pointer;">Hide Formula</span></p>
+  
+  <p class="bodytextno">Here is the formula you can use to calculate the sample mean.</p>
+  <div style="margin:0 0 2em 2em;">
+  <p>$$ \bar{x} = \frac{1}{n} \sum_{i=1}^{n} x_i $$</p>
+  </div>
+
+  <p class="bodytextno">In this formula, there are several symbols to know:</p>
+  <div style="margin:0 0 2em 2em;">
+    <p class="firstColumn">$$ \bar{x} $$</p>
+        <p class="secondColumn">the sample mean</p>
+    <p class="firstColumn">$$ n $$</p><p class="secondColumn">the sample size</p>
+    <p class="firstColumn">$$ x_i $$</p><p class="secondColumn">the i<sup>th</sup> data value</p>
+    <p class="firstColumn">$$ \sum $$</p><p class="secondColumn">the act of summing the expression to its right</p>
+  </div>
+</div>
+
+
+
+
+
+
+
+<!-- Show the solution -->
+<div id="showSolution" style="display:block;">
+  <p class="bodytextno"><span title="Click to show the solution" onclick="toggleSolution();" style="text-decoration:underline; cursor: pointer;">Show Solution</span></p>
+</div>
+    
+    
+<div id="hideSolution" style="display: none; padding-bottom: 3em;">
+  <p class="bodytextno"><span title="Click to hide the solution" onclick="toggleSolution();" style="text-decoration:underline; cursor:pointer;">Hide Solution</span></p>
+
+  <div style="margin:0 0 2em 2em;">
+  <p>$$ \begin{align}
+    \bar{x} &= \frac{1}{n} \sum_{i=1}^{n} x_i \\
+    &= \frac{1}{4} \sum_{i=1}^{4} x_i \\
+    &= \frac{1}{4} \left( 52 + 1 + 89 + 52 \right) \\
+    &= \frac{1}{4} \left( 194 \right) \\[1ex]
+    &= 48.5 \\
+    \end{align} $$</p>
+  </div>
+  <p class="bodytextno">Thus, the mean of these 4 values is <span class="highlight">48.5</span>.</p>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Show the R code -->
+<div id="showR" style="display: block;">
+  <p class="bodytextno"><span title="Click to show the R code" onclick="toggleR();" style="text-decoration:underline; cursor: pointer;">Show the R Code</span></p>
+</div>
+    
+    
+<div id="hideR" style="display: none; padding-bottom: 3em;">
+  <p class="bodytextno"><span title="Click to hide the R Code" onclick="toggleR();" style="text-decoration:underline; cursor:pointer;">Hide the R Code</span></p>
+  <p class="bodytextno">Copy and paste the following code into your R script window, then run it from there.</p>
+  <div class="r code">
+    <p>sample = c(52, 1, 89, 52)</p>
+    <p>mean(sample)</p>
+  </div>
+  <p class="bodytextno">In the R output, the mean is the number output by the script.</p>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Show the Excel code -->
+<div id="showExcel" style="display: block;">
+  <p class="bodytextno"><span title="Click to show the Excel code" onclick="toggleExcel();" style="text-decoration:underline; cursor: pointer;">Show the Excel Code</span></p>
+</div>
+
+
+<div id="hideExcel" style="display: none; padding-bottom: 3em;">
+  <p class="bodytextno"><span title="Click to hide the Excel Code" onclick="toggleExcel();" style="text-decoration:underline; cursor:pointer;">Hide the Excel Code</span></p>
+  <p class="bodytextno">Copy and paste the following code into your Excel spreadsheet window, making sure your cursor is in <code>A1</code> when you paste.</p>
+  <div class="excel code">
+    <p>sample<br />52<br />1<br />89<br />52<br /></p>
+    <p>=AVERAGE(A2:A5)</p>
+  </div>
+  <p class="bodytextno">Note that the function in Excel is <code>AVERAGE</code> and <em>not</em> <code>MEAN</code>.</p>
+</div>
+
+
+
+
+
+
+
+
+</div> <!-- end: Get Help -->
+
+<spoiler>
+<p>...</p>
+<p>Show solution.</p>
+<p>(mathjax solution)</p>
+<p>Thus, the mean of these values is {{ probleminstance.answer }}.</p>
+<p>...</p>
+</spoiler>
+{% endblock %}

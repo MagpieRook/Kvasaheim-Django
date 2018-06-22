@@ -1,0 +1,10 @@
+{% extends 'samplestatistics/base.html' %}
+
+{% block content %}
+<p>Want to do some stats?</p>
+<ul>
+    {% for problem in problems %}
+        <li><a href="{% url 'samplestatistics:problem_detail' pk=problem.pk %}">{{ problem.title }}</a></li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,286 @@
+/*
+    ss_all.css
+*/
+
+html, body { font-family: 'Roboto', sans-serif; }
+
+h1, h2, h3, h4, h5 { font-family: 'Raleway', sans-serif; color: #000000; padding-top: 2ex; }
+
+h1 { font-size: 145%; }
+h2 { font-size: 115%; }
+h3 { font-size: 105%; }
+h4 { font-size: 100%; }
+h5 { font-size:  95%; }
+
+table {
+  border-spacing: 0px;
+  border-collapse: separate;
+  font-family: 'Roboto', sans-serif;
+}
+caption { display:none; }
+
+.summaryStatistics {
+  border-spacing: 4px;
+}
+
+#body2 { max-width: 1020px; margin: 0 auto; padding: 0 10px; }
+
+
+.bodytext, .bodytextno {
+    font-size: 1em;
+    color: #333333;
+    text-align: justify;
+    padding: 0.25ex 0;
+    line-height: 115%;
+}
+.bodytext { text-indent: 2.5em; }
+
+
+
+.problemExample {
+  margin: 0 0 1ex 3em; 
+  font:smaller sans-serif;
+  text-align: justify;
+}
+.theData {
+  font: 1em serif;
+  margin: 0 0 1em 2em;
+  text-align: left;
+}
+
+.subSections {
+  margin: 2em 1em 4em 0; 
+  padding: 0 0 1ex 1em; 
+}
+
+.highlight {
+  background-color: #ffff33;
+  padding: 4px;
+}
+
+.statTerm, abbr {
+  font-weight: bold;
+  border-bottom: 1px dotted #171717;
+  cursor: help;
+}
+
+.smaller { font-size: smaller; }
+.larger  { font-size: larger; }
+
+.bar {
+    text-decoration: overline;
+}
+.tilde { position:relative; top:-1ex; right:1.15ex; margin-right: -1ex;}
+
+.breadCrumbs {
+  margin-top:0 ;
+  border-bottom: 1px solid #8c1717;
+  border-top: 1px solid #8c1717;
+  padding: 1ex;
+  font-size: smaller;
+  background-color: #fffefa;
+  }
+.breadCrumbs b { white-space:nowrap; }
+a.renewData {
+  color: #8c178c;
+  text-decoration: none;
+}
+
+
+a         { text-decoration: none; } 
+a:link    { color: #17178c; }
+a:visited { color: #8c178c; }
+a:hover   { color: #8c1717; text-decoration: underline; }
+a:active  { color: #8c1717; }
+
+
+a.picLink {color: white;}
+a.picLink:hover {text-decoration:none;}
+
+
+
+
+
+
+/*
+
+
+
+
+
+*/
+.code{
+  margin-left: 1em;
+  padding: 1em 1em 1em 3em;
+  text-indent: -2em;
+
+  font-family: monospace;
+  font-size: 90%;
+
+  line-height: 1.25em;
+}
+
+.xltable td {
+  font: 90% monospace;
+  border: 1px solid #cccccc;
+  background-color: #fafafa;
+  width: 8em;
+  line-height: 2.5em;
+  text-align: center;
+  padding: 0 1ex;
+}
+.xltable th {
+  border: #666666;
+  background-color: #333333;
+  color: #ffffff;
+  width: 8em;
+  line-height: 2.5em;
+  text-align: center;
+}
+.xltable table { margin: 1em; border: 1px solid #cccccc; }
+
+
+.r{
+  color: #000099;
+  background-color: #fff9cc;
+
+  border-top:    1px groove tan;
+  border-left:   1px groove tan;
+  border-bottom: 1px ridge  tan;
+  border-right:  1px ridge  tan;
+}
+
+
+.excel{
+  color: #000099;
+  background-color: #eeffee;
+
+  border-top:    1px groove #008800;
+  border-left:   1px groove #008800;
+  border-bottom: 1px ridge  #008800;
+  border-right:  1px ridge  #008800;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+
+*/
+
+.guessRegion {
+  width: 80%;
+  margin : 0 auto;
+  border-radius: 25px;
+  border: 1px solid #178c17;
+  padding: 20px;
+  background-color: aliceblue;
+}
+
+input[type="text"] { padding: 0 1em; margin-left: 1em; border: 0; border-bottom: 1px solid grey; text-align: center; width: 10em; background-color: transparent; }
+input[type="button"] { margin: 0 1em; border-radius: 15px; padding: 1em; }
+
+
+
+
+.confint {
+  width: 100%;
+  margin : 0;
+  border-radius: 25px;
+  border: 1px solid #178c17;
+  padding: 20px;
+  background-color: aliceblue;
+}
+.confint input[type="text"] { padding: 0 1ex; margin: 0 2px; border: 0; border-bottom: 1px solid grey; text-align: center; background-color: transparent; }
+.confint input[type="button"] { margin: 0 0 0 1em; padding: 1em;}
+
+
+
+
+
+
+
+.firstColumn  { width: 5em; }
+.secondColumn { margin: -2.25em 0 0 5em; }
+
+#column1 { display:none; }
+
+.MathJax_Display { text-align: left !important; }
+
+
+
+
+
+
+
+
+
+
+/*
+    CSS for internal areas
+*/
+
+
+
+#firstRow {
+/*  height: 250px; */
+}
+
+
+#pageID { width: 100%; background-color: #8c1717; }
+#pageID p {
+  font-size: 125%;
+  font-family: 'Raleway', sans-serif; 
+  color: #ffffff;
+  padding: 1ex 1em;
+  margin: 1ex 0;
+}
+
+
+
+
+#topDouble {
+  height: 250px; 
+  width:  100%;
+  
+  margin: 1ex 0;
+  border: 0;
+  border-top: 1px solid #8c1717;
+  border-bottom: 1px solid #8c1717;
+  padding: 0;
+  
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+
+
+#contentArea { width: 95%; padding: 0 2.5% 2em; }
+
+
+#column {
+  width: 100%;
+  background-color: #ffffff;
+  padding: 0;
+  border: 0;
+}
+
+
+
+
+
+/*
+    CSS for front areas
+*/
+
