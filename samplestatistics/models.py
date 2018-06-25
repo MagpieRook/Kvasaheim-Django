@@ -7,17 +7,29 @@ import types
 def get_sentinel_user():
     return get_user_model().objects.get_or_create(username='deleted')[0]
 
+class Category(models.Model):
+    title           = models.CharField(max_length=200, unique=True)
+    published       = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name_plural = "categories"
 class Problem(models.Model):
     title           = models.CharField(max_length=200, unique=True)
     text            = models.TextField()
+    category        = models.ForeignKey(Category, related_name='problem', on_delete=models.CASCADE)
     published       = models.BooleanField(default=False)
     equation        = models.TextField()
     random_low      = models.IntegerField()
     random_high     = models.IntegerField()
     num_rands_low   = models.IntegerField()
     num_rands_high  = models.IntegerField()
-
-    # category, realm, etc.
+    formula         = models.TextField()
+    solution        = models.TextField()
+    rcode           = models.TextField()
+    excel           = models.TextField()
 
     def __str__(self):
         return self.title

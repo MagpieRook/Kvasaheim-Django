@@ -5,11 +5,12 @@ from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 
 from .forms import AnswerForm, CommentForm
-from .models import Problem, ProblemInstance, Attempt, Comment
+from .models import Category, Problem, ProblemInstance, Attempt, Comment
 
 def home(request):
+    categories = Category.objects.filter(published=True)
     problems = Problem.objects.filter(published=True)
-    return render(request, 'samplestatistics/home.html', {'problems': problems})
+    return render(request, 'samplestatistics/home.html', {'categories': categories, 'problems': problems})
 
 def problem_detail(request, pk):
     if request.method == 'POST':
@@ -28,8 +29,13 @@ def problem_detail(request, pk):
         problem = get_object_or_404(Problem, pk=pk)
         form = AnswerForm()
         probleminstance = ProblemInstance.objects.create_problem_instance(problem)
+        nl = probleminstance.numbers_list
+        list_sum = sum(nl)
+        list_addition = '+'.join(str(x) for x in nl)
         if problem.published:
-            return render(request, 'samplestatistics/problem_detail.html', {'problem': problem, 'probleminstance': probleminstance, 'form': form})
+            return render(request, 'samplestatistics/problem_detail.html', {'problem': problem,
+                'probleminstance': probleminstance, 'form': form,
+                'list_sum': list_sum, 'list_addition': list_addition})
         else:
             raise PermissionDenied
 
