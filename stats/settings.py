@@ -148,5 +148,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# from stats import prod
 from stats import social_auth_settings
+# from stats import prod
