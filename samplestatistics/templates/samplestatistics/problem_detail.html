@@ -1,85 +1,100 @@
 {% extends 'samplestatistics/base.html' %}
 
+{% block title %}{{ problem.title }} -{% endblock %}
+
+{% block customhead %}
+    <script>
+        $(function() {
+            $('.replace').each(function() {
+                var text = $(this).html().replace(/(@list)/g, '{{ instance.numbers }}');
+                text = text.replace(/(@length1)/g, '{{ instance.numbers_list|length|add:"1" }}');
+                text = text.replace(/(@length)/g, '{{ instance.numbers_list|length }}');
+                text = text.replace(/(@addition)/g, '{{ instance.numbers_list|join:" + " }}');
+                text = text.replace(/(@multiplication)/g, '{{ instance.numbers_list|join:" * " }}');
+                text = text.replace(/(@subtraction)/g, '{{ instance.numbers_list|join:" - " }}');
+                text = text.replace(/(@division)/g, '{{ instance.numbers_list|join:" ÷ " }}');
+                text = text.replace(/(@listbreak)/g, '{{ instance.numbers_list|join:"<br>" }}');
+                text = text.replace(/(@sum)/g, '{{ list_sum }}');
+                text = text.replace(/(@answer)/g, '{{ instance.answer }}');
+                $(this).html(text);
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block nav %}
+                    <li class="nav-item">»</li>
+                    <li class="nav-item"><a href="{% url 'samplestatistics:problem_detail' problem.id %}" active>{{ problem.title }}</a></li>
+{% endblock %}
+
 {% block content %}
-<title>{{ problem.title }}</title>
 <h1>{{ problem.title }}</h1>
 <h2>The Problem</h2>
 <p>{{ problem.text|safe }}</p>
 <blockquote>
-    {{ probleminstance.numbers }}
+    {{ instance.numbers }}
 </blockquote>
-Calculate the mean value of this sample, <span class='statTerm' title="sample mean">\( \bar{x} \)</span>.
-
 
 <h2>Your Answer</h2>
-<p>In the box below, please enter the sample mean of the data given above, then click on the “Check your answer!” button. Please round your answer to the <b>ten-thousandths place.</b></p>
-
-{% if user.is_authenticated %}
-<form action="{% url 'samplestatistics:problem_detail' problem.id %}" method="POST">
-    {% csrf_token %}
-    <input type="hidden" name="problem_instance" id="problem_instance" value="{{ probleminstance.pk }}">
-    {{ form.answer.errors }}
-    <label for="{{ form.answer.id_for_label }}">Answer</label>
-    {{ form.answer }}
-    <input type="submit" value="Submit">
-</form>
+<p>In the box below, please enter your guess for the data given above, then click on the “Check your answer!” button. Please round your answer to the <b>ten-thousandths place.</b></p>
+<div class="guessRegion">
+    {% if user.is_authenticated %}
+    <form action="{% url 'samplestatistics:problem_detail' problem.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="problem_instance" id="problem_instance" value="{{ instance.pk }}">
+        {{ form.answer.errors }}
+        <label for="{{ form.answer.id_for_label }}">Answer</label>
+        {{ form.answer }}
+        <input type="submit" value="Check your answer!">
+    </form>
 {% endif %}
+</div>
+
 <h2>Assistance</h2>
-
-
-
 <!-- Show the Formula -->
 <div id="showFormula" style="display:block;">
-  <p class="bodytextno"><span title="Click to show the formula" onclick="toggleFormula();" style="text-decoration:underline; cursor:pointer;">Show Formula</span></p>
+    <p class="bodytextno"><span title="Click to show the formula" onclick="toggleFormula();" style="text-decoration:underline; cursor:pointer;">Show Formula</span></p>
 </div>
 
 <div id="hideFormula" style="display: none; padding-bottom: 3em;">
-  <p class="bodytextno"><span title="Click to hide the formula" onclick="toggleFormula();" style="text-decoration:underline; cursor:pointer;">Hide Formula</span></p>
+    <p class="bodytextno"><span title="Click to hide the formula" onclick="toggleFormula();" style="text-decoration:underline; cursor:pointer;">Hide Formula</span></p>
   
-  {{ problem.formula|safe }}
-  </div>
+    <span class="replace">{{ problem.formula|safe }}</span>
+    </div>
 </div>
 
 <!-- Show the solution -->
 <div id="showSolution" style="display:block;">
-  <p class="bodytextno"><span title="Click to show the solution" onclick="toggleSolution();" style="text-decoration:underline; cursor: pointer;">Show Solution</span></p>
+    <p class="bodytextno"><span title="Click to show the solution" onclick="toggleSolution();" style="text-decoration:underline; cursor: pointer;">Show Solution</span></p>
 </div>
 
 <div id="hideSolution" style="display: none; padding-bottom: 3em;">
-  <p class="bodytextno"><span title="Click to hide the solution" onclick="toggleSolution();" style="text-decoration:underline; cursor:pointer;">Hide Solution</span></p>
+    <p class="bodytextno"><span title="Click to hide the solution" onclick="toggleSolution();" style="text-decoration:underline; cursor:pointer;">Hide Solution</span></p>
 
-  <div style="margin:0 0 2em 2em;">
-  {{ problem.solution|safe }}
-  </div>
-  <p class="bodytextno">Thus, the mean of these  {{ probleminstance.numbers_list|length|add:"1" }}  values is <span class="highlight">{{ probleminstance.answer }}</span>.</p>
+    <div style="margin:0 0 2em 2em;">
+    <span class="replace">{{ problem.solution|safe }}</span>
+    </div>
 </div>
 
 <!-- Show the R code -->
 <div id="showR" style="display: block;">
-  <p class="bodytextno"><span title="Click to show the R code" onclick="toggleR();" style="text-decoration:underline; cursor: pointer;">Show the R Code</span></p>
+    <p class="bodytextno"><span title="Click to show the R code" onclick="toggleR();" style="text-decoration:underline; cursor: pointer;">Show the R Code</span></p>
 </div>    
     
 <div id="hideR" style="display: none; padding-bottom: 3em;">
-  <p class="bodytextno"><span title="Click to hide the R Code" onclick="toggleR();" style="text-decoration:underline; cursor:pointer;">Hide the R Code</span></p>
-  <p class="bodytextno">Copy and paste the following code into your R script window, then run it from there.</p>
-  <div class="r code">
-    {{ problem.rcode|safe }}
-  </div>
-  <p class="bodytextno">In the R output, the mean is the number output by the script.</p>
+    <p class="bodytextno"><span title="Click to hide the R Code" onclick="toggleR();" style="text-decoration:underline; cursor:pointer;">Hide the R Code</span></p>
+    <p class="bodytextno">Copy and paste the following code into your R script window, then run it from there.</p>
+    <span class="replace">{{ problem.rcode|safe }}</span>
 </div>
 
 <!-- Show the Excel code -->
 <div id="showExcel" style="display: block;">
-  <p class="bodytextno"><span title="Click to show the Excel code" onclick="toggleExcel();" style="text-decoration:underline; cursor: pointer;">Show the Excel Code</span></p>
+    <p class="bodytextno"><span title="Click to show the Excel code" onclick="toggleExcel();" style="text-decoration:underline; cursor: pointer;">Show the Excel Code</span></p>
 </div>
 
 <div id="hideExcel" style="display: none; padding-bottom: 3em;">
-  <p class="bodytextno"><span title="Click to hide the Excel Code" onclick="toggleExcel();" style="text-decoration:underline; cursor:pointer;">Hide the Excel Code</span></p>
-  <p class="bodytextno">Copy and paste the following code into your Excel spreadsheet window, making sure your cursor is in <code>A1</code> when you paste.</p>
-  <div class="excel code">
-    {{ problem.excel|safe }}
-  </div>
-  <p class="bodytextno">Note that the function in Excel is <code>AVERAGE</code> and <em>not</em> <code>MEAN</code>.</p>
-</div>
+    <p class="bodytextno"><span title="Click to hide the Excel Code" onclick="toggleExcel();" style="text-decoration:underline; cursor:pointer;">Hide the Excel Code</span></p>
+    <p class="bodytextno">Copy and paste the following code into your Excel spreadsheet window, making sure your cursor is in <code>A1</code> when you paste.</p>
+    <span class="replace">{{ problem.excel|safe }}</span>
 </div>
 {% endblock %}

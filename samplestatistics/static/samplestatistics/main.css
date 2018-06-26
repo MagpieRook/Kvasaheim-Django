@@ -1,8 +1,9 @@
+/* ------------------ COLORS ----------------- */
 /*
-		COLORS
 	Scarlett	#8c1717
-	White		#fff
 	Gray		#fff0ec
+	White		#fff
+	Black		#000
 */
 
 /* ---------------- TOP LEVEL ---------------- */
@@ -23,15 +24,29 @@ h1 { font-size: 145%; }
 h2 { font-size: 115%; }
 h3 { font-size: 105%; }
 h4 { font-size: 100%; }
-h5 { font-size:  95%; }
+h5 { font-size: 95%; }
 
 table {
-  border-spacing: 0px;
-  border-collapse: separate;
-  font-family: 'Roboto', sans-serif;
+	border-spacing: 0px;
+	border-collapse: separate;
+	font-family: 'Roboto', sans-serif;
 }
 
 caption { display: none; }
+ul { list-style-type: square; }
+
+a,
+a:link,
+a:visited {
+	text-decoration: none;
+	color: #8c1717;
+}
+
+a:active,
+a:hover {
+	text-decoration: underline;
+	color: #000;
+}
 
 /* ---------------- NAVIGATION --------------- */
 .headerBar {
@@ -44,13 +59,8 @@ caption { display: none; }
 	margin-bottom: 15px;
 }
 
-.navBar {
-	float: left;
-}
-
-.userBar {
-	text-align: right;
-}
+.navBar { float: left; }
+.userBar { text-align: right; }
 
 ul.nav {
 	list-style: none;
@@ -64,9 +74,7 @@ li.nav-item {
 	margin-right: 2px;
 }
 
-li a {
-	display: block;
-}
+li a { display: block; }
 
 /* ----------------- HEADER ------------------ */
 .header {
@@ -78,8 +86,8 @@ li a {
 
 .header h1 {
 	font-size: 125%;
-	padding: 10.46px 20px;
-	margin: 10.46px 0;
+	padding: 10px 20px;
+	margin: 10px 0;
 }
 
 .headerImage {
@@ -111,6 +119,60 @@ li a {
 	padding-bottom: 32px;
 }
 
+.problemList { line-height: 2em; }
+
+.code{
+	margin-left: 1em;
+	padding: 1em 1em 1em 3em;
+	text-indent: -2em;
+	font-family: monospace;
+	font-size: 90%;
+	line-height: 1.25em;
+}
+
+.r {
+	color: #000099;
+	background-color: #fff9cc;
+	border-top:	1px groove tan;
+	border-left: 1px groove tan;
+	border-bottom: 1px ridge tan;
+	border-right: 1px ridge tan;
+}
+
+.excel {
+	color: #000099;
+	background-color: #eeffee;
+	border-top:	1px groove #008800;
+	border-left: 1px groove #008800;
+	border-bottom: 1px ridge #008800;
+	border-right: 1px ridge #008800;
+}
+
+.guessRegion {
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 25px;
+  border: 1px solid #178c17;
+  padding: 20px;
+  background-color: aliceblue;
+}
+
+.guessRegion input[type="number"] {
+	padding: 0 1em;
+	margin-left: 1em;
+	border: 0;
+	border-bottom: 1px solid grey;
+	text-align: center;
+	width: 10em;
+	background-color: transparent;
+}
+
+.guessRegion input[type="submit"] {
+	margin: 0 1em;
+	border-radius: 15px;
+	padding: 1em;
+}
+
 /* ------------------ FOOTER ----------------- */
 .footerBar {
 	background-color: #fff0ec;
@@ -118,4 +180,5 @@ li a {
 	font-size: 70%;
 	color: #8c1717;
 	border-top: 1px solid #8c1717;
+	margin-bottom: 5.5em;
 }

@@ -6,13 +6,13 @@
 <ul>
     {% for category in categories %}
     <h2>{{ category.title }}</h2>
-    <ul>
+    <ul class="problemList">
     	{% for problem in problems %}
-    	{% ifequal problem.category category %}
-        <li><a href="{% url 'samplestatistics:problem_detail' pk=problem.pk %}">{{ problem.title }}</a></li>
-        {% endifequal %}
+	    	{% ifequal problem.category category %}
+	        <li><a href="{% url 'samplestatistics:problem_detail' pk=problem.pk %}">{{ problem.title }}</a></li>
+	        {% endifequal %}
         {% empty %}
-        <li>No problems published in this category.</li>
+	        <p>No problems published in this category.</p>
         {% endfor %}
     </ul>
     {% empty %}

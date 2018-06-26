@@ -86,7 +86,7 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }   
 }
-#
+
 # POSTGRESQL CONFIGURATIONS
 # DATABASES = {
 #     'default': {
@@ -98,8 +98,6 @@ DATABASES = {
 #         'PORT': '',
 #     }
 # }
-# # django database...not sure how this works but it doesn't seem to need it?
-# DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
