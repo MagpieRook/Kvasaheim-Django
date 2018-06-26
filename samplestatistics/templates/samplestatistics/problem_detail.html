@@ -13,7 +13,7 @@
                 text = text.replace(/(@multiplication)/g, '{{ instance.numbers_list|join:" * " }}');
                 text = text.replace(/(@subtraction)/g, '{{ instance.numbers_list|join:" - " }}');
                 text = text.replace(/(@division)/g, '{{ instance.numbers_list|join:" ÷ " }}');
-                text = text.replace(/(@listbreak)/g, '{{ instance.numbers_list|join:"<br>" }}');
+                text = text.replace(/(@breaks)/g, '{{ instance.numbers_list|join:"<br>" }}');
                 text = text.replace(/(@sum)/g, '{{ list_sum }}');
                 text = text.replace(/(@answer)/g, '{{ instance.answer }}');
                 $(this).html(text);
@@ -35,10 +35,11 @@
     {{ instance.numbers }}
 </blockquote>
 
+
 <h2>Your Answer</h2>
+{% if user.is_authenticated %}
 <p>In the box below, please enter your guess for the data given above, then click on the “Check your answer!” button. Please round your answer to the <b>ten-thousandths place.</b></p>
 <div class="guessRegion">
-    {% if user.is_authenticated %}
     <form action="{% url 'samplestatistics:problem_detail' problem.id %}" method="POST">
         {% csrf_token %}
         <input type="hidden" name="problem_instance" id="problem_instance" value="{{ instance.pk }}">
@@ -47,8 +48,10 @@
         {{ form.answer }}
         <input type="submit" value="Check your answer!">
     </form>
-{% endif %}
 </div>
+{% else %}
+<p>Please <a href="{% url 'login' %}">login</a> to answer!</p>
+{% endif %}
 
 <h2>Assistance</h2>
 <!-- Show the Formula -->

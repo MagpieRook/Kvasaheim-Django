@@ -148,6 +148,17 @@ li a { display: block; }
 	border-right: 1px ridge #008800;
 }
 
+.highlight {
+  background-color: #ffff33;
+  padding: 4px;
+}
+
+.statTerm, abbr {
+  font-weight: bold;
+  border-bottom: 1px dotted #171717;
+  cursor: help;
+}
+
 .guessRegion {
   width: 80%;
   margin: 0 auto;
