@@ -19,8 +19,7 @@ def problem_detail(request, pk, ipk=None):
         if form.is_valid():
             nattempt = Attempt()
             nattempt.user = request.user
-            nattempt.answer = form.cleaned_data['answer']
-            print(form['problem_instance'].value()) # debug statement
+            nattempt.answer = float(form.cleaned_data['answer'])
             nattempt.problem = get_object_or_404(ProblemInstance,
                 pk=form.cleaned_data['problem_instance'])
             nattempt.save()
