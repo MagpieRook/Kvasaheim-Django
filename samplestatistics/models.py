@@ -105,7 +105,7 @@ class Attempt(models.Model):
 
     @property
     def correct(self):
-        if str(self.answer) == str(self.problem.answer):
+        if abs(self.problem.answer - self.answer) < 0.001:
             return True
         return False
 
