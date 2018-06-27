@@ -56,6 +56,11 @@ class Path(models.Model):
     direction       = models.IntegerField(choices=PATH_CHOICES)
 
 class ProblemManager(models.Manager):
+    # need to generate numbers in a normal distribution
+    # look at numpy? (numpy.random.normal(low=x, high=x, size=x))
+
+    # num_rands = randint(problem.num_rands_low, problem.num_rands_high)
+    # numbers = numpy.random.normal(low=problem.random_low, high=problem.random_high, size=num_rands)
     def create_problem_instance(self, problem):
         numbers = ""
         num_rands = randint(problem.num_rands_low, problem.num_rands_high)
