@@ -12,6 +12,7 @@
 <h2>Submitted {{ answer.date }}</h2>
 <h3>{{ answer.problem.numbers }}</h3>
 <p>Answered: {{ answer.answer }} {% if answer.correct %}CORRECT{% else %}INCORRECT</p>
-<p>Solution: {{ answer.problem.answer }}</p>{% endif %}
+<p>Solution: {{ answer.problem.answer }}</p>
+<p>Retry: <a href="{% url 'samplestatistics:problem_detail' pk=answer.problem.problem.id ipk=answer.problem.id %}">This Problem</a> or <a href="{% url 'samplestatistics:problem_detail' pk=answer.problem.problem.id %}">Problems Like This</a></p>{% endif %}
 <br><br>
 {% endblock %}
