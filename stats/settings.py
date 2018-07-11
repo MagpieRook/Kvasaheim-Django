@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 """
 
 import os
-import dj_database_url
 import psycopg2
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -25,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'keepitsecret'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', False)
+DEBUG = os.environ.get('DEBUG', False) == 'True'
 
 ALLOWED_HOSTS = ['localhost']
 
@@ -79,7 +78,6 @@ WSGI_APPLICATION = 'stats.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
 
-# SQLITE CONFIGURATIONS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -87,17 +85,6 @@ DATABASES = {
     }   
 }
 
-# POSTGRESQL CONFIGURATIONS
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': '###',
-#         'USER': '###',
-#         'PASSWORD': '###',
-#         'HOST': 'localhost',
-#         'PORT': '',
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.0/ref/settings/#auth-password-validators
@@ -129,6 +116,11 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'samplestatistics:home'
 LOGOUT_REDIRECT_URL = 'samplestatistics:home'
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'CHANGEME.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'CHANGEME'
+
+SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['example.com']
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
@@ -148,5 +140,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-from stats import social_auth_settings
-# from stats import prod
+import django_heroku
+django.django_heroku.settings(locals())
