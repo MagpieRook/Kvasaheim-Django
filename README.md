@@ -2,11 +2,14 @@
 A Django rewrite of http://statistics.kvasaheim.com/.
 
 ## How to Install
-First, install [Python 3.6.5](https://www.python.org/ftp/python/3.6.5/python-3.6.5.exe), which comes with [pip](https://pypi.org/project/pip/). Make sure your pip is updated by running `pip install --upgrade pip`
+First, install [Python 3.6.6](https://www.python.org/ftp/python/3.6.6/python-3.6.6.exe), which comes with [pip](https://pypi.org/project/pip/). Make sure your pip is updated by running `pip install --upgrade pip`
 
 __Recommended:__ Using pip, install [virtualenv](https://virtualenv.pypa.io/en/stable/installation/).
 
 Then, download Kvasaheim-Django.
+
+### Using pipenv (Recommended for Heroku)
+-- TODO --
 
 ### Using virtualenv (Recommended)
 `virtualenv` is a tool to keep all of your code, packages, and dependencies in one place. To learn more about what a virtual environment is and why (and how) to use one, read [Python's documentation on venv](https://docs.python.org/3/tutorial/venv.html).
@@ -20,13 +23,11 @@ Then, download Kvasaheim-Django.
 ### Installing and Running Kvasaheim-Django
 1. Run `pip install -r requirements.txt`. This will automatically fetch, download, and install the pip packages required to run Kvasaheim-Django.
 2. Edit settings.py with DB information
-3. python manage.py migrate
-4. python manage.py createsuperuser
-5. Login to localhost:8000 with google account
-6. Login to localhost:8000/admin/ with superuser
-7. Make google account superuser
-8. Delete password superuser
-_Note: Working on an easier way to do steps 4-8._
+3. `python manage.py migrate` and `python manage.py collectstatic`
+4. `python manage.py runserver`
+5. Login to site with google account
+6. `python manage.py makesuperuser <google account username>`
+7. Click the "Admin" link next to your username to access the `/admin` site.
 
 ## Problem Documentation
 In its current form, the Problem has a few intricacies that need to be addressed.
