@@ -49,7 +49,7 @@ class TwoListProblem(Problem):
     second_num_rands_high  = models.IntegerField()
     second_spread          = models.IntegerField()
 
-class CategorialProblem(Problem):
+class CategoricalProblem(Problem):
     categorical_num_rands_low   = models.IntegerField()
     categorical_num_rands_high  = models.IntegerField()
     # TODO: way to determine categorical data source/randomness
@@ -154,7 +154,7 @@ class TwoListInstance(ProblemInstance):
     def __str__(self):
         return str(self.problem) + " " + str(self.id)
     
-class CategorialInstance(ProblemInstance):
+class CategoricalInstance(ProblemInstance):
     categorical_list = models.TextField()
 
     @property
