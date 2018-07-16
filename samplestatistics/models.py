@@ -2,6 +2,8 @@ from django.db import models
 from django.utils import timezone
 from random import randint
 
+import numpy
+
 import types
 
 def get_sentinel_user():
@@ -28,6 +30,7 @@ class Problem(models.Model):
     random_high     = models.IntegerField()
     num_rands_low   = models.IntegerField()
     num_rands_high  = models.IntegerField()
+    spread          = models.FloatField()
     paths           = models.ManyToManyField('self', symmetrical=False,
                         related_name='path', related_query_name='path',
                         through='Path')
@@ -38,6 +41,18 @@ class Problem(models.Model):
 
     def __str__(self):
         return self.title
+
+class TwoListProblem(Problem):
+    second_random_low      = models.IntegerField()
+    second_random_high     = models.IntegerField()
+    second_num_rands_low   = models.IntegerField()
+    second_num_rands_high  = models.IntegerField()
+    second_spread          = models.IntegerField()
+
+class CategorialProblem(Problem):
+    categorical_num_rands_low   = models.IntegerField()
+    categorical_num_rands_high  = models.IntegerField()
+    # TODO: way to determine categorical data source/randomness
 
 PATH_DEPENDS = 1
 PATH_RECOMMENDS = 2
@@ -56,23 +71,42 @@ class Path(models.Model):
     direction       = models.IntegerField(choices=PATH_CHOICES)
 
 class ProblemManager(models.Manager):
-    # need to generate numbers in a normal distribution
-    # look at numpy? (numpy.random.normal(low=x, high=x, size=x))
-
-    # num_rands = randint(problem.num_rands_low, problem.num_rands_high)
-    # numbers = numpy.random.normal(low=problem.random_low, high=problem.random_high, size=num_rands)
     def create_problem_instance(self, problem):
         numbers = ""
         num_rands = randint(problem.num_rands_low, problem.num_rands_high)
-        for i in range(num_rands):
-            numbers += str(
-                randint(problem.random_low, problem.random_high)
-            ) + ", "
-        numbers = numbers[0:len(numbers)-2]
+        loc = (problem.random_low + problem.random_high) / 2
+        numbers = numpy.random.normal(loc=loc,
+            scale=problem.spread, size=num_rands)
         problem_instance = self.create(problem=problem,
             numbers=numbers, answer_string=problem.equation)
         problem_instance.save()
         return problem_instance
+
+    def create_two_list_instance(self, problem):
+        numbers = []
+        numbers.append('')
+        num_rands = randint(problem.num_rands_low, problem.num_rands_high)
+        loc = (problem.random_low + problem.random_high) / 2
+        numbers[0] = numpy.random.normal(loc=loc,
+            scale=problem.spread, size=num_rands)
+        numbers.append('')
+        num_rands = randint(problem.second_num_rands_low,
+            problem.second_num_rands_high)
+        loc = (problem.second_random_low + problem.seond_random_high) / 2
+        numbers[1] = numpy.random.normal(loc=loc,
+            scale=problem.second_spread, size=num_rands)
+        problem_instance = self.create(problem=problem, numbers=numbers[0],
+            answer_string=problem.equation, second_numbers=numbers[1])
+
+    def create_categorical_instance(self, problem):
+        numbers = ""
+        num_rands = randint(problem.num_rands_low, problem.num_rands_high)
+        loc = (problem.random_low + problem.random_high) / 2
+        numbers = numpy.random.normal(loc=loc,
+            scale=problem.spread, size=num_rands)
+        categorical = '' # TODO: way to generate categorical data?
+        categorical_instance = self.create(problem=problem, numbers=numbers,
+            categorical_list=categorical, answer_string=problem.equation)
 
 class ProblemInstance(models.Model):
     problem       = models.ForeignKey(Problem, on_delete=models.CASCADE,
@@ -89,8 +123,8 @@ class ProblemInstance(models.Model):
 
     @property
     def answer(self):
-        helpme = "" + self.answer_string
-        exec(helpme, globals())
+        answer = "" + self.answer_string
+        exec(answer, globals())
         if (self.numbers != ''):
             return solve(self.numbers_list)
         else:
@@ -98,6 +132,39 @@ class ProblemInstance(models.Model):
 
     def __str__(self):
         return str(self.problem) + " " + str(self.id)
+
+class TwoListInstance(ProblemInstance):
+    second_numbers  = models.CharField(max_length=200)
+    
+    @property
+    def second_numbers_list(self):
+        nlist = self.numbers.strip().split(',')
+        nlist = [int(n) for n in nlist]
+        return nlist
+
+    @property
+    def answer(self):
+        answer = "" + self.answer_string
+        exec(answer, globals())
+        if (self.numbers != '' and self.second_numbers != ''):
+            return solve(self.numbers_list + self.second_numbers_list)
+        else:
+            return 0
+
+    def __str__(self):
+        return str(self.problem) + " " + str(self.id)
+    
+class CategorialInstance(ProblemInstance):
+    categorical_list = models.TextField()
+
+    @property
+    def answer(self):
+        answer = "" + self.answer_string
+        exec(answer, globals())
+        if (self.numbers_list != '' and self.categorical_list != ''):
+            return solve(self.categorical_list + self.second_numbers_list)
+        else:
+            return 0
 
 class Attempt(models.Model):
     problem = models.ForeignKey(ProblemInstance, on_delete=models.CASCADE,
