@@ -7,15 +7,29 @@
 {% endblock %}
 
 {% block content %}
-<h1>{{ u.first_name }} {{ u.last_name }} ({{ u.username }})</h1>
-
-{% for answer in answers %}
-    <h2>{{ forloop.counter }}: {{ answer.problem.problem.title }}</h2>
-    <h3>{{ answer.problem.numbers }}</h3>
-    <h3>{{ answer.date }}</h3>
-    <p>Answered: {{ answer.answer }} {% if answer.correct %}CORRECT{% else %}INCORRECT</p>
-    <p>Solution: {{ answer.problem.answer }}</p>
-    <p>Retry: <a href="{% url 'samplestatistics:problem_detail' pk=answer.problem.problem.id ipk=answer.problem.id %}">This Problem</a> or <a href="{% url 'samplestatistics:problem_detail' pk=answer.problem.problem.id %}">Problems Like This</a></p>{% endif %}
-    <br><br>
-{% endfor %}
+<h1 class="user">{{ u.first_name }} {{ u.last_name }} ({{ u.username }})</h1>
+<h2>Answers</h2>
+{% for category in categories %}
+<h1 class="center"><a href="{% url 'samplestatistics:home' pk=category.id %}">{{ category }}</a></h1>
+{% for problem in problems %}
+{% if problem.category == category %}
+<h1 class="center">{{ problem.title }}</h1>
+<div class="results">
+    {% for answer in answers %}
+    {% if answer.problem.problem == problem %}
+    <div class="result">
+        <div class="aligned">
+            <h2>{{ answer.problem.problem.title }} of <a href="{% url 'samplestatistics:problem_detail' pk=answer.problem.problem.id ipk=answer.problem.id %}">{{ answer.problem.numbers }}</a></h2>
+            <h3>{{ answer.date }}</h3>
+            <p><span class="info">Answered:</span> {{ answer.answer }} {% if answer.correct %} <span class="correct">&#10003;</span></p>{% else %}<span class="incorrect">&#10005;</span></p>
+            <p><span class="info">Solution:</span> {{ answer.problem.answer }}</p>
+            <p><span class="info">Retry:</span> <a href="{% url 'samplestatistics:problem_detail' pk=answer.problem.problem.id ipk=answer.problem.id %}">This Problem</a> or <a href="{% url 'samplestatistics:problem_detail' pk=answer.problem.problem.id %}">Problems Like This</a></p>{% endif %}
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>
+    {% endif %}
+    {% endfor %}
+    {% endfor %}
 {% endblock %}

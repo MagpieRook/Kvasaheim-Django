@@ -48,6 +48,9 @@ a:hover {
 	color: #000;
 }
 
+.info { font-weight: bold; }
+.center { text-align: center; }
+
 /* ---------------- NAVIGATION --------------- */
 .headerBar {
 	background: #fff;
@@ -103,6 +106,7 @@ li a { display: block; }
 }
 
 /* ------------------- BODY ------------------ */
+/* TOP LEVEL */
 .outerBody {
 	margin-top: 5.5em;
 	background: #fff;
@@ -119,6 +123,7 @@ li a { display: block; }
 	padding-bottom: 32px;
 }
 
+/* PROBLEMS */
 .problemList { line-height: 2em; }
 
 .code{
@@ -183,6 +188,33 @@ li a { display: block; }
 	border-radius: 15px;
 	padding: 1em;
 }
+
+/* USER PROFILE */
+.user { border-bottom: 1px solid grey; }
+.correct { color: green; }
+.incorrect { color: red; }
+
+.results {
+	text-align: center;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.result {
+	flex: 1 1 33%;
+	margin: 1em;
+	border-radius: 15px;
+	border: 1px solid grey;
+	background-color: #fff0ec;
+	padding: 1em;
+	min-height: 200px;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+}
+
+.result * { padding: 0;}
+
 
 /* ------------------ FOOTER ----------------- */
 .footerBar {

@@ -1,4 +1,10 @@
 {% extends 'samplestatistics/base.html' %}
+{% block nav %}
+                    {% if pk %}
+                    <li class="nav-item">»</li>
+                    <li class="nav-item"><a href="{% url 'samplestatistics:home' pk=pk %}" active>{{ categories.first }}</a></li>
+                    {% endif %}
+{% endblock %}
 
 {% block content %}
 <h1>Sample Statistics for Numeric Data</h1>

@@ -15,8 +15,8 @@
 <h1>{{ problem.title }}</h1>
 <h2>Submitted {{ answer.date }}</h2>
 <h3>{{ answer.problem.numbers }}</h3>
-{% if answer.problem.second_numbers %}
-<h3>{{ answer.problem.second_numbers }}</h3>
+{% if answer.problem.categorical_list %}
+<h3>{{ answer.problem.categorical_list }}</h3>
 {% endif %}
 <p>Answered: {{ answer.answer }} {% if answer.correct %}CORRECT{% else %}INCORRECT</p>
 <p>Solution: {{ answer.problem.answer }}</p>

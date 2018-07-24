@@ -30,7 +30,6 @@ class Problem(models.Model):
     random_high     = models.IntegerField()
     num_rands_low   = models.IntegerField()
     num_rands_high  = models.IntegerField()
-    spread          = models.FloatField()
     paths           = models.ManyToManyField('self', symmetrical=False,
                         related_name='path', related_query_name='path',
                         through='Path')
@@ -47,12 +46,12 @@ class TwoListProblem(Problem):
     second_random_high     = models.IntegerField()
     second_num_rands_low   = models.IntegerField()
     second_num_rands_high  = models.IntegerField()
-    second_spread          = models.IntegerField()
 
 class CategoricalProblem(Problem):
     categorical_num_rands_low   = models.IntegerField()
     categorical_num_rands_high  = models.IntegerField()
-    # TODO: way to determine categorical data source/randomness
+    num_categories_low          = models.IntegerField()
+    num_categories_high         = models.IntegerField()
 
 PATH_DEPENDS = 1
 PATH_RECOMMENDS = 2
@@ -72,31 +71,32 @@ class Path(models.Model):
 
 class ProblemManager(models.Manager):
     def create_problem_instance(self, problem):
-        numbers = ""
+        numbers = []
         num_rands = randint(problem.num_rands_low, problem.num_rands_high)
-        loc = (problem.random_low + problem.random_high) / 2
-        numbers = numpy.random.normal(loc=loc,
-            scale=problem.spread, size=num_rands)
+        loc = randint(problem.random_low, problem.random_high)
+        scale = (loc - problem.random_low) / 2
+        numbers = list(numpy.random.normal(loc=loc,
+            scale=scale, size=num_rands))
+        numbers = str([int(n) for n in numbers])[1:-1]
         problem_instance = self.create(problem=problem,
-            numbers=numbers, answer_string=problem.equation)
+            numbers=numbers, answer_string=problem.equation) 
         problem_instance.save()
         return problem_instance
 
     def create_two_list_instance(self, problem):
         numbers = []
-        numbers.append('')
         num_rands = randint(problem.num_rands_low, problem.num_rands_high)
-        loc = (problem.random_low + problem.random_high) / 2
+        loc = randint(problem.random_low, problem.random_high)
         numbers[0] = numpy.random.normal(loc=loc,
             scale=problem.spread, size=num_rands)
         numbers.append('')
         num_rands = randint(problem.second_num_rands_low,
             problem.second_num_rands_high)
-        loc = (problem.second_random_low + problem.seond_random_high) / 2
+        loc = (problem.second_random_low + problem.second_random_high) / 2
         numbers[1] = numpy.random.normal(loc=loc,
             scale=problem.second_spread, size=num_rands)
-        problem_instance = self.create(problem=problem, numbers=numbers[0],
-            answer_string=problem.equation, second_numbers=numbers[1])
+        problem_instance = self.create(problem=problem, numbers=numbers[0].tostring(),
+            answer_string=problem.equation, second_numbers=numbers[1].tostring())
 
     def create_categorical_instance(self, problem):
         numbers = ""
@@ -104,7 +104,11 @@ class ProblemManager(models.Manager):
         loc = (problem.random_low + problem.random_high) / 2
         numbers = numpy.random.normal(loc=loc,
             scale=problem.spread, size=num_rands)
-        categorical = '' # TODO: way to generate categorical data?
+        cat_num = randint(problem.categorical_num_rands_low,
+            problem.categorical_num_rands_high)
+        categorical = []
+        for i in range(cat_num):
+            categorical.append(string.ascii_uppercase[i])
         categorical_instance = self.create(problem=problem, numbers=numbers,
             categorical_list=categorical, answer_string=problem.equation)
 
@@ -177,7 +181,7 @@ class Attempt(models.Model):
 
     @property
     def correct(self):
-        if abs(self.problem.answer - self.answer) < 0.001:
+        if abs(self.problem.answer - float(self.answer)) < 0.001:
             return True
         return False
 
