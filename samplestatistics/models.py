@@ -3,8 +3,7 @@ from django.utils import timezone
 from random import randint
 
 import numpy
-
-import types
+import string
 
 def get_sentinel_user():
     return get_user_model().objects.get_or_create(username='deleted')[0]
@@ -69,41 +68,34 @@ class Path(models.Model):
                         related_query_name='to_problem')
     direction       = models.IntegerField(choices=PATH_CHOICES)
 
+def generate_normal_list(num_rands_low, num_rands_high, random_low, random_high):
+    num_rands = randint(num_rands_low, num_rands_high)
+    loc = randint(random_low, random_high)
+    scale = (loc - random_low) / 4
+    numbers = list(numpy.random.normal(loc=loc,
+        scale=scale, size=num_rands))
+    return str([int(n) for n in numbers])[1:-1]
+
 class ProblemManager(models.Manager):
     def create_problem_instance(self, problem):
-        numbers = []
-        num_rands = randint(problem.num_rands_low, problem.num_rands_high)
-        loc = randint(problem.random_low, problem.random_high)
-        scale = (loc - problem.random_low) / 2
-        numbers = list(numpy.random.normal(loc=loc,
-            scale=scale, size=num_rands))
-        numbers = str([int(n) for n in numbers])[1:-1]
         problem_instance = self.create(problem=problem,
-            numbers=numbers, answer_string=problem.equation) 
+            numbers=generate_normal_list(problem.num_rands_low, problem.num_rands_high,
+            problem.random_low, problem.random_high), answer_string=problem.equation) 
         problem_instance.save()
         return problem_instance
 
     def create_two_list_instance(self, problem):
-        numbers = []
-        num_rands = randint(problem.num_rands_low, problem.num_rands_high)
-        loc = randint(problem.random_low, problem.random_high)
-        numbers[0] = numpy.random.normal(loc=loc,
-            scale=problem.spread, size=num_rands)
-        numbers.append('')
-        num_rands = randint(problem.second_num_rands_low,
-            problem.second_num_rands_high)
-        loc = (problem.second_random_low + problem.second_random_high) / 2
-        numbers[1] = numpy.random.normal(loc=loc,
-            scale=problem.second_spread, size=num_rands)
-        problem_instance = self.create(problem=problem, numbers=numbers[0].tostring(),
-            answer_string=problem.equation, second_numbers=numbers[1].tostring())
+        numbers = generate_normal_list(problem.num_rands_low, problem.num_rands_high,
+            problem.random_low, problem.random_high)
+        second_numbers = generate_normal_list(problem.second_num_rands_low,
+            problem.second_num_rands_high, problem.second_random_low,
+            problem.second_random_high)
+        problem_instance = self.create(problem=problem, numbers=numbers.tostring(),
+            answer_string=problem.equation, second_numbers=second_numbers[1].tostring())
 
     def create_categorical_instance(self, problem):
-        numbers = ""
-        num_rands = randint(problem.num_rands_low, problem.num_rands_high)
-        loc = (problem.random_low + problem.random_high) / 2
-        numbers = numpy.random.normal(loc=loc,
-            scale=problem.spread, size=num_rands)
+        numbers = generate_normal_list(problem.num_rands_low, problem.num_rands_high,
+            problem.random_low, problem.random_high)
         cat_num = randint(problem.categorical_num_rands_low,
             problem.categorical_num_rands_high)
         categorical = []
