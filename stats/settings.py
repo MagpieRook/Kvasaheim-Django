@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'social_django',
-    'samplestatistics',
+    'kvasaheim',
 ]
 
 MIDDLEWARE = [
@@ -108,8 +108,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'samplestatistics:home'
-LOGOUT_REDIRECT_URL = 'samplestatistics:home'
+LOGIN_REDIRECT_URL = 'kvasaheim:home'
+LOGOUT_REDIRECT_URL = 'kvasaheim:home'
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'CHANGEME.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'CHANGEME'

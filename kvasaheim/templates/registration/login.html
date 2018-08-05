@@ -1,0 +1,19 @@
+{% extends 'kvasaheim/base.html' %}
+
+{% block nav %}
+<li class="nav-item">»</li>
+<li class="nav-item"><a href="{% url 'login' %}" active>Login</a></li>
+{% endblock %}
+
+{% block content %}
+<h2><a href="{% url 'social:begin' 'google-oauth2' %}">Login with Google</a></h2>
+
+{% comment %}
+<h2>Login with Password</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+{% endcomment %}
+{% endblock %}

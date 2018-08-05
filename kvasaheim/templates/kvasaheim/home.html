@@ -1,0 +1,28 @@
+{% extends 'kvasaheim/base.html' %}
+{% block nav %}
+                    {% if pk %}
+                    <li class="nav-item">»</li>
+                    <li class="nav-item"><a href="{% url 'kvasaheim:home' pk=pk %}" active>{{ categories.first }}</a></li>
+                    {% endif %}
+{% endblock %}
+
+{% block content %}
+<h1>Sample Statistics for Numeric Data</h1>
+<p>The following sample statistics make sense to calculate on quantitative (numeric) data, only. Please select the sample statistic you would like to practice calculating:</p>
+<ul>
+    {% for category in categories %}
+    <h2>{{ category.title }}</h2>
+    <ul class="problemList">
+    	{% for problem in problems %}
+	    	{% ifequal problem.category category %}
+	        <li><a href="{% url 'kvasaheim:problem_detail' pk=problem.pk %}">{{ problem.title }}</a></li>
+	        {% endifequal %}
+        {% empty %}
+	        <p>No problems published in this category.</p>
+        {% endfor %}
+    </ul>
+    {% empty %}
+    <h2>No categories published.</h2>
+    {% endfor %}
+</ul>
+{% endblock %}

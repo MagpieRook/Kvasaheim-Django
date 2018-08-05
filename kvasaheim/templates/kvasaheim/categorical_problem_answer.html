@@ -1,0 +1,25 @@
+{% extends 'kvasaheim/base.html' %}
+
+{% block nav %}
+{% with category=problem.category %}
+                    <li class="nav-item">»</li>
+                    <li class="nav-item"><a href="{% url 'kvasaheim:home' category.id %}">{{ category }}</a></li>
+                    <li class="nav-item">»</li>
+                    <li class="nav-item"><a href="{% url 'kvasaheim:problem_detail' problem.id %}" active>{{ problem.title }}</a></li>
+                    <li class="nav-item">»</li>
+                    <li class="nav-item"><a href="{% url 'kvasaheim:problem_answer' problem.id answer.id %}" active>Answer</a></li>
+{% endwith %}
+{% endblock %}
+
+{% block content %}
+<h1>{{ problem.title }}</h1>
+<h2>Submitted {{ answer.date }}</h2>
+<h3>{{ answer.problem.numbers }}</h3>
+{% if answer.problem.categorical_list %}
+<h3>{{ answer.problem.categorical_list }}</h3>
+{% endif %}
+<p>Answered: {{ answer.answer }} {% if answer.correct %}CORRECT{% else %}INCORRECT</p>
+<p>Solution: {{ answer.problem.answer }}</p>
+<p>Retry: <a href="{% url 'kvasaheim:problem_detail' pk=answer.problem.problem.id ipk=answer.problem.id %}">This Problem</a> or <a href="{% url 'kvasaheim:problem_detail' pk=answer.problem.problem.id %}">Problems Like This</a></p>{% endif %}
+<br><br>
+{% endblock %}
