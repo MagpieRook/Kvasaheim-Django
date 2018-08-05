@@ -46,8 +46,7 @@ As mentioned above, Kvasaheim-Django uses Google OAuth2 through Social App Djang
 2. Go to your new project's [APIs & Services](https://console.cloud.google.com/apis/dashboard) page, specifically the [Credentials section](https://console.cloud.google.com/apis/credentials).
 3. Select `Create credentials` and `OAuth client ID`. If the `Configure consent screen` warning appears, follow the directions until you return to the `Create OAuth client ID` screen.
 4. Select `Web applciation`. Enter a name, for example `Kvasaheim Django`.
-5. Under Authorized JavaScript origins, fill in the base URL for your project or `localhost:8000` (or a customized local URL) if running locally. You can add multiple URLs here. Note: IP addresses must be prefixed by `http[s]://` to be recognized.
-6. Under Authorized redirect URIs, fill in `localhost:8000/account/complete/google-oauth2/` where `localhost:8000` can be replaced by the URL you entered above.
+6. Under Authorized redirect URIs, fill in `[example.com]/account/complete/google-oauth2/`. Instead of example.com, fill in the base URL for your project or `localhost:8000` (or a customized local URL) if running locally. Note: You can add multiple lines here, prefixed by `http[s]://` to be recognized.
 7. After you click `Create` your Client ID and Client secret will appear. In `settings.py` fill in `SOCIAL_AUTH_GOOGLE_OAUTH2_KEY` with your full Client ID and `SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET` with your full secret key.
 8. Replace `example.com` in `SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS`. This variable is used to whitelist certain domains, which will be the only domains allowed to access your site through Google Authentication. You can comment out or remove this variable, or set to a blank list, to remove this functionality. If using this variable, remember to consider whitelisting `gmail.com` to allow most Google users to access your site.
 
@@ -65,9 +64,9 @@ In its current form, the Problem has a few intricacies that need to be addressed
 4. Formula, Solution, Rcode, and Excel are sections from [Project Scarlet](http://statistics.kvasaheim.com/samplestatistics/mean.php). These are also marked `safe` by our templates, accept valid HTML, and are written as to accept MathJax, as well. There are a few notes here for inserting the values of a sample, however.
   * @list will insert the comma-separated list of numbers.
   * @length will insert the length of the list of numbers for the problem instance.
-    * @length1 will insert the length+1, commonly used in Excel code (`A2:A6` for a sample of 5, for example).
+  * @length1 will insert the length+1, commonly used in Excel code (`A2:A6` for a sample of 5, for example).
   * @addition will insert the list of numbers joined by `+` signs: `1+2+3+4+5`.
-    * @multiplication, @division, @subtraction will do the same.
+  * @multiplication, @division, @subtraction will do the same.
   * @breaks will insert the list of numbers joined by `<br>`, breaking it into a vertical list.
   * @sum will insert the sum of the list.
   * @answer will insert the answer to the problem instance.
