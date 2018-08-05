@@ -1,9 +1,11 @@
-from django.db import models
-from django.utils import timezone
 from random import randint
+import string
+
+from django.utils import timezone
+from django.db import models
 
 import numpy
-import string
+
 
 def get_sentinel_user():
     return get_user_model().objects.get_or_create(username='deleted')[0]
