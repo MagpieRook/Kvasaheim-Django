@@ -53,7 +53,7 @@ As mentioned above, Kvasaheim-Django uses Google OAuth2 through Social App Djang
 ### Adding Authentication Methods
 By default, the only authentication method is through Google. If adding password authentication or more authentication methods through [Social Auth](http://python-social-auth.readthedocs.io/en/latest/index.html), you will need to edit a few files in Kvasaheim-Django.
 1. In `stats/urls.py`, uncomment the `login` url.
-2. In `kvasaheim/templates/kvasaheim/base.html`, comment line 65 (which contains `url 'social:begin' 'google-oauth2'`) and uncomment line 66 (`url 'login'`).
+2. In `kvasaheim/templates/kvasaheim/base.html`, replace `<li class="nav-item"><a href="{% url 'social:begin' 'google-oauth2' %}">Login</a></li>` with `<li class="nav-item"><a href="{% url 'login' %}">Login</a></li>`.
 3. In `kvasaheim/templates/registration/login.html`, you'll need to add forms for any authentication methods. Provided are a sample Google authentication link and a commented Username and Password form.
 
 ## Problem Documentation
