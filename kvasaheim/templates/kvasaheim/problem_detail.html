@@ -56,11 +56,11 @@
 {% endblock %}
 
 {% block nav %}
-{% with category=problem.category %}
+{% with realm=problem.category.realm %}
                     <li class="nav-item">»</li>
-                    <li class="nav-item"><a href="{% url 'kvasaheim:home' category.id %}">{{ category }}</a></li>
-                    <li class="nav-item">»</li>
-                    <li class="nav-item"><a href="{% url 'kvasaheim:problem_detail' problem.id %}" active>{{ problem.title }}</a></li>
+                    <li class="nav-item"><a href="{% url 'kvasaheim:home' realm.id %}">{{ realm }}</a></li>
+                    <li class="nav-item"><a class="active" href="#">»</a></li>
+                    <li class="nav-item"><a class="active" href="{% url 'kvasaheim:problem_detail' problem.id %}">{{ problem.title }}</a></li>
 {% endwith %}
 {% endblock %}
 
@@ -69,8 +69,13 @@
 <h2>The Problem</h2>
 <p>{{ problem.text|safe }}</p>
 <blockquote>
-    {{ instance.numbers }}{% if instance.second_numbers %}
-    {{ instance.second_numbers }}{% endif %}
+    {% if instance.lists > 1 %}
+    {% for list in instance.numbers_list %}
+        {{ list|join:", "}}<br>
+    {% endfor %}
+    {% else %}
+        {{ instance.numbers_list|join:", " }}
+    {% endif %}
 </blockquote>
 
 

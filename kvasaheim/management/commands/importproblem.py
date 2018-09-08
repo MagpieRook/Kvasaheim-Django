@@ -1,7 +1,7 @@
 """Adds a manage.py command for easy Problem importing."""
 from django.db.utils import IntegrityError
 from django.core.management.base import BaseCommand, CommandError
-from kvasaheim.models import Category, Path, Problem
+from kvasaheim.models import Category, Generator, Problem
 
 class Command(BaseCommand):
     """Adds a Command as per
@@ -51,10 +51,6 @@ class Command(BaseCommand):
                     category=category,
                     published=problemdata.published,
                     equation=problemdata.equation,
-                    random_low=problemdata.random_low,
-                    random_high=problemdata.random_high,
-                    num_rands_low=problemdata.num_rands_low,
-                    num_rands_high=problemdata.num_rands_high,
                     formula=problemdata.formula,
                     solution=problemdata.solution,
                     rcode=problemdata.rcode,

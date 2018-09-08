@@ -7,10 +7,6 @@ class Problem:
     published = True
     equation = '''def solve(x):
       return round(sum(x) / len(x), 4)'''
-    random_low = 10
-    random_high = 100
-    num_rands_low = 5
-    num_rands_high = 10
     formula = '''<p class="bodytextno">Here is the formula you can use to calculate the sample mean.</p>
       <div style="margin:0 0 2em 2em;">
       <p>$$ \\bar{x} = \\frac{1}{n} \\sum_{i=1}^{n} x_i $$</p>

@@ -1,20 +1,27 @@
+import string
+
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 
-from .forms import AnswerForm, CommentForm
-from .models import Category, Problem, ProblemInstance, Attempt, Comment
+from .forms import AnswerForm
+from .models import Realm, Category, Problem, ProblemInstance, Attempt
 
-def home(request, pk=None):
-    if pk:
-        categories = Category.objects.filter(pk=pk, published=True)
+def home(request, title=None, cpk=None, ):
+    if title:
+        realms = Realm.objects.filter(title=title, published=True)
+    else:
+        realms = Realm.objects.filter(published=True)
+    if cpk:
+        categories = Category.objects.filter(pk=cpk, published=True)
     else:
         categories = Category.objects.filter(published=True)
     problems = Problem.objects.filter(published=True)
     return render(request, 'kvasaheim/home.html',
-        {'categories': categories, 'pk': pk, 'problems': problems})
+        {'realms': realms, 'title': title, 'categories': categories, 'cpk': cpk,
+        'problems': problems})
 
 def problem_detail(request, pk, ipk=None):
     if request.method == 'POST':
@@ -37,7 +44,17 @@ def problem_detail(request, pk, ipk=None):
                 raise Http404('No instance with that ID for this problem.')
         else:
             instance = ProblemInstance.objects.create_problem_instance(problem)
-        list_sum = sum(instance.numbers_list)
+        list_sum = None
+        if instance.lists > 1:
+            for nlist in instance.numbers_list:
+                if isinstance(nlist[0], int):
+                    if list_sum:
+                        list_sum = [list_sum] + sum(nlist)
+                    else:
+                        list_sum = sum(nlist)
+        else:
+            if isinstance(instance.numbers_list[0], int):
+                list_sum = sum(instance.numbers_list)
         if problem.published:
             return render(request, 'kvasaheim/problem_detail.html',
                 {'problem': problem, 'instance': instance,

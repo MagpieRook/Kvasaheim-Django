@@ -1,9 +1,9 @@
 {% extends 'kvasaheim/base.html' %}
 
 {% block nav %}
-{% with category=problem.category %}
+{% with realm=problem.category.realm %}
                     <li class="nav-item">»</li>
-                    <li class="nav-item"><a href="{% url 'kvasaheim:home' category.id %}">{{ category }}</a></li>
+                    <li class="nav-item"><a href="{% url 'kvasaheim:home' realm.id %}">{{ realm }}</a></li>
                     <li class="nav-item">»</li>
                     <li class="nav-item"><a href="{% url 'kvasaheim:problem_detail' problem.id %}" active>{{ problem.title }}</a></li>
                     <li class="nav-item">»</li>

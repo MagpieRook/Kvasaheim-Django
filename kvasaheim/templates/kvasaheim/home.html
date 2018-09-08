@@ -1,16 +1,22 @@
 {% extends 'kvasaheim/base.html' %}
 {% block nav %}
-                    {% if pk %}
+                    {% if rpk %}
                     <li class="nav-item">»</li>
-                    <li class="nav-item"><a href="{% url 'kvasaheim:home' pk=pk %}" active>{{ categories.first }}</a></li>
+                    <li class="nav-item"><a href="{% url 'kvasaheim:home' rpk=rpk %}" active>{{ realms.first }}</a></li>
+                    {% endif %}
+                    {% if cpk %}
+                    <li class="nav-item">»</li>
+                    <li class="nav-item"><a href="{% url 'kvasaheim:home' cpk=cpk %}" active>{{ categories.first }}</a></li>
                     {% endif %}
 {% endblock %}
 
 {% block content %}
-<h1>Sample Statistics for Numeric Data</h1>
-<p>The following sample statistics make sense to calculate on quantitative (numeric) data, only. Please select the sample statistic you would like to practice calculating:</p>
+{% for realm in realms %}
+<h1>{{ realm.title }}</h1>
+<p>{{ realm.text }}</p>
 <ul>
     {% for category in categories %}
+    {% ifequal category.realm realm %}
     <h2>{{ category.title }}</h2>
     <ul class="problemList">
     	{% for problem in problems %}
@@ -21,8 +27,12 @@
 	        <p>No problems published in this category.</p>
         {% endfor %}
     </ul>
+    {% endifequal %}
     {% empty %}
-    <h2>No categories published.</h2>
+    <h2>No categories published in this realm.</h2>
     {% endfor %}
 </ul>
+{% empty %}
+<h1>All realms offline.</h1>
+{% endfor %}
 {% endblock %}
