@@ -10,6 +10,7 @@ django-heroku = "*"
 "psycopg2-binary" = "*"
 social-auth-app-django = "*"
 gunicorn = "*"
+numpy = "*"
 
 [dev-packages]
 

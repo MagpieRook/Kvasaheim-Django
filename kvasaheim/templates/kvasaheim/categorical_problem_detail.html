@@ -1,0 +1,141 @@
+{% extends 'kvasaheim/base.html' %}
+
+{% block title %}{{ problem.title }} - {% endblock %}
+
+{% block customhead %}
+    <script>
+        /** .replace
+          * This function replaces the @notation built for database parsing 
+          * with its Django template parts in all html tags with the .replace
+          * class. To define a new notation, add the following line before the
+          * line "$(this).html(text);".
+          *     text = text.replace(/(@<new_notation>)/g, '<new_string>')
+          * Be careful of new notations that contain all or part of another
+          * notation at its beginning. See @length1 and @length below.
+          */
+        $(function() {
+            $('.replace').each(function() {
+                // Assume set is [1,2,3,4,5]
+                // $(this).html() gets the text with html tags to preserve formatting
+                // @list replaces with '1, 2, 3, 4, 5'
+                var text = $(this).html().replace(/(@list)/g, '{{ instance.numbers }}');
+                text = text.replace(/(@catlist)/g, '{{ instance.second_numbers }}')
+                // @length1 replaces with len(set)+1 == '6'
+                // note: length1 needs to gets replaced before length, just as "mathematics" would need to get replaced before "math", else we are left with '1' or 'ematics'
+                text = text.replace(/(@length1)/g, '{{ instance.numbers_list|length|add:"1" }}');
+                text = text.replace(/(@catlength1)/g, '{{ instance.second_numbers_list|length|add:"1" }}');
+                // @length replaces with len(set) == '5' 
+                text = text.replace(/(@length)/g, '{{ instance.numbers_list|length }}');
+                text = text.replace(/(@catlength)/g, '{{ instance.second_numbers_list|length }}');
+                // @addition replaces with '1 + 2 + 3 + 4 + 5'
+                text = text.replace(/(@addition)/g, '{{ instance.numbers_list|join:" + " }}');
+                text = text.replace(/(@cataddition)/g, '{{ instance.second_numbers_list|join:" + " }}');
+                // @multiplication replaces with '1 * 2 * 3 * 4 * 5'
+                text = text.replace(/(@multiplication)/g, '{{ instance.numbers_list|join:" * " }}');
+                text = text.replace(/(@catmultiplication)/g, '{{ instance.second_numbers_list|join:" * " }}');
+                // @subtraction replaces with '1 - 2 - 3 - 4 - 5'
+                text = text.replace(/(@subtraction)/g, '{{ instance.numbers_list|join:" - " }}');
+                text = text.replace(/(@catsubtraction)/g, '{{ instance.second_numbers_list|join:" - " }}');
+                // @division replaces with '1 ÷ 2 ÷ 3 ÷ 4 ÷ 5'
+                text = text.replace(/(@division)/g, '{{ instance.numbers_list|join:" ÷ " }}');
+                text = text.replace(/(@catdivision)/g, '{{ instance.second_numbers_list|join:" ÷ " }}');
+                // @breaks replaces with '1<br>2<br>3<br>4<br>5'
+                // used to make a vertical list
+                text = text.replace(/(@breaks)/g, '{{ instance.numbers_list|join:"<br>" }}');
+                text = text.replace(/(@catbreaks)/g, '{{ instance.second_numbers_list|join:"<br>" }}');
+                // @sum replaces with '15' == sum(set)
+                text = text.replace(/(@sum)/g, '{{ list_sum }}');
+                text = text.replace(/(@catsum)/g, '{{ second_list_sum }}');
+                // @answer replaces with the answer to the problem // for mean on set, this would be 3 == sum(set)/len(set) == 15/5
+                text = text.replace(/(@answer)/g, '{{ instance.answer }}');
+                // this does the actual replacing, keeping the html tags
+                $(this).html(text);
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block nav %}
+{% with category=problem.category %}
+                    <li class="nav-item">»</li>
+                    <li class="nav-item"><a href="{% url 'kvasaheim:home' category.id %}">{{ category }}</a></li>
+                    <li class="nav-item">»</li>
+                    <li class="nav-item"><a href="{% url 'kvasaheim:problem_detail' problem.id %}" active>{{ problem.title }}</a></li>
+{% endwith %}
+{% endblock %}
+
+{% block content %}
+<h1>{{ problem.title }}</h1>
+<h2>The Problem</h2>
+<p>{{ problem.text|safe }}</p>
+<blockquote>
+    {{ instance.numbers }}
+    {{ instance.categorical_list }}
+</blockquote>
+
+
+<h2>Your Answer</h2>
+{% if user.is_authenticated %}
+<p>In the box below, please enter your guess for the data given above, then click on the “Check your answer!” button. Please round your answer to the <b>ten-thousandths place.</b></p>
+<div class="guessRegion">
+    <form action="{% url 'kvasaheim:problem_detail' problem.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="problem_instance" id="problem_instance" value="{{ instance.pk }}">
+        {{ form.answer.errors }}
+        <label for="{{ form.answer.id_for_label }}">Answer</label>
+        {{ form.answer }}
+        <input type="submit" value="Check your answer!">
+    </form>
+</div>
+{% else %}
+<p>Please <a href="{% url 'login' %}">login</a> to answer!</p>
+{% endif %}
+
+<h2>Assistance</h2>
+<!-- Show the Formula -->
+<div id="showFormula" style="display:block;">
+    <p class="bodytextno"><span title="Click to show the formula" onclick="toggleFormula();" style="text-decoration:underline; cursor:pointer;">Show Formula</span></p>
+</div>
+
+<div id="hideFormula" style="display: none; padding-bottom: 3em;">
+    <p class="bodytextno"><span title="Click to hide the formula" onclick="toggleFormula();" style="text-decoration:underline; cursor:pointer;">Hide Formula</span></p>
+  
+    <span class="replace">{{ problem.formula|safe }}</span>
+    </div>
+</div>
+
+<!-- Show the solution -->
+<div id="showSolution" style="display:block;">
+    <p class="bodytextno"><span title="Click to show the solution" onclick="toggleSolution();" style="text-decoration:underline; cursor: pointer;">Show Solution</span></p>
+</div>
+
+<div id="hideSolution" style="display: none; padding-bottom: 3em;">
+    <p class="bodytextno"><span title="Click to hide the solution" onclick="toggleSolution();" style="text-decoration:underline; cursor:pointer;">Hide Solution</span></p>
+
+    <div style="margin:0 0 2em 2em;">
+    <span class="replace">{{ problem.solution|safe }}</span>
+    </div>
+</div>
+
+<!-- Show the R code -->
+<div id="showR" style="display: block;">
+    <p class="bodytextno"><span title="Click to show the R code" onclick="toggleR();" style="text-decoration:underline; cursor: pointer;">Show the R Code</span></p>
+</div>    
+    
+<div id="hideR" style="display: none; padding-bottom: 3em;">
+    <p class="bodytextno"><span title="Click to hide the R Code" onclick="toggleR();" style="text-decoration:underline; cursor:pointer;">Hide the R Code</span></p>
+    <p class="bodytextno">Copy and paste the following code into your R script window, then run it from there.</p>
+    <span class="replace">{{ problem.rcode|safe }}</span>
+</div>
+
+<!-- Show the Excel code -->
+<div id="showExcel" style="display: block;">
+    <p class="bodytextno"><span title="Click to show the Excel code" onclick="toggleExcel();" style="text-decoration:underline; cursor: pointer;">Show the Excel Code</span></p>
+</div>
+
+<div id="hideExcel" style="display: none; padding-bottom: 3em;">
+    <p class="bodytextno"><span title="Click to hide the Excel Code" onclick="toggleExcel();" style="text-decoration:underline; cursor:pointer;">Hide the Excel Code</span></p>
+    <p class="bodytextno">Copy and paste the following code into your Excel spreadsheet window, making sure your cursor is in <code>A1</code> when you paste.</p>
+    <span class="replace">{{ problem.excel|safe }}</span>
+</div>
+{% endblock %}
