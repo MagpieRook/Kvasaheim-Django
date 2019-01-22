@@ -14,7 +14,7 @@ Using pip, install [pipenv](https://docs.pipenv.org/) with the command `pip inst
 1. In the Kvasaheim-Django folder, use the command `pipenv install`. This will look at the supplied Pipfile and Pipfile.lock and install all packages and dependencies listed.
 2. Run the virtual environment with the command `pipenv shell`. You can also run commands in pipenv without opening the shell with `pipenv run [command]`. For example: `pipenv run python manage.py runserver`.
 
-### Using virtualenv (Recommended if you don't use pipenv)
+### Using virtualenv
 Using pip, install [virtualenv](https://virtualenv.pypa.io/en/stable/installation/) with the command `pip install virtualenv`.
 
 `virtualenv` is a tool to keep all of your code, packages, and dependencies in one place. To learn more about what a virtual environment is and why (and how) to use one, read [Python's documentation on venv](https://docs.python.org/3/tutorial/venv.html).

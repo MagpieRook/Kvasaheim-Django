@@ -9,7 +9,7 @@ from django.core.exceptions import PermissionDenied
 from .forms import AnswerForm
 from .models import Realm, Category, Problem, ProblemInstance, Attempt
 
-def home(request, title=None, cpk=None, ):
+def home(request, title=None, cpk=None):
     if title:
         realms = Realm.objects.filter(title=title, published=True)
     else:
@@ -77,7 +77,7 @@ def user_profile(request, user):
     categories = set()
     problems = set()
     for answer in answers:
-        categories.add(Category.objects.get(problem=answer.problem.problem))
+        categories.add(Category.objects.get(problems=answer.problem.problem))
         problems.add(Problem.objects.get(instance=answer.problem))
     return render(request, 'kvasaheim/user_profile.html',
     {'u': u, 'categories': categories, 'problems': problems, 'answers': answers})

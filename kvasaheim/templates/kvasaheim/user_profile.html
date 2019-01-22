@@ -10,7 +10,7 @@
 <h1 class="user">{{ u.first_name }} {{ u.last_name }} ({{ u.username }})</h1>
 <h2>Answers</h2>
 {% for category in categories %}
-<h1 class="center"><a href="{% url 'kvasaheim:home' pk=category.id %}">{{ category }}</a></h1>
+<h1 class="center"><a href="{% url 'kvasaheim:home' cpk=category.id %}">{{ category }}</a></h1>
 {% for problem in problems %}
 {% if problem.category == category %}
 <h1 class="center">{{ problem.title }}</h1>
