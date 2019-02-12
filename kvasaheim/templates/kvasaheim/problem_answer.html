@@ -18,7 +18,7 @@
 {% if answer.problem.second_numbers %}
 <h3>{{ answer.problem.second_numbers }}</h3>
 {% endif %}
-<p>Answered: {{ answer.answer }} {% if answer.correct %}CORRECT{% else %}INCORRECT</p>
+<p>Answered: {{ answer.answer }} {% if answer.correct %}<span class="correct">&#10003;</span></p>{% else %}<span class="incorrect">&#10005;</span></p>
 <p>Solution: {{ answer.problem.answer }}</p>
 <p>Retry: <a href="{% url 'kvasaheim:problem_detail' pk=answer.problem.problem.id ipk=answer.problem.id %}">This Problem</a> or <a href="{% url 'kvasaheim:problem_detail' pk=answer.problem.problem.id %}">Problems Like This</a></p>{% endif %}
 <br><br>
