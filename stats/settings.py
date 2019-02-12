@@ -111,10 +111,10 @@ LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'kvasaheim:home'
 LOGOUT_REDIRECT_URL = 'kvasaheim:home'
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'CHANGEME.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'CHANGEME'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('GOOGLE_OAUTH2_KEY', 'CHANGEME.apps.googleusercontent.com')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('GOOGLE_OAUTH2_SECRET', 'CHANGEME')
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = ['example.com']
+SOCIAL_AUTH_GOOGLE_OAUTH2_WHITELISTED_DOMAINS = os.environ.get('GOOGLE_OAUTH2_WHITELIST', 'example.com').split(',')
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
