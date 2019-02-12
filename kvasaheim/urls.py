@@ -4,6 +4,7 @@ from . import views
 app_name = 'kvasaheim'
 urlpatterns = [
     path('', views.home, name='home'),
+    path('logout', views.logout, name='logout'),
     path('<slug:title>', views.home, name='home'),
     path('category/<int:cpk>/', views.home, name='home'),
     path('realm/<int:rpk>/category/<int:cpk>/', views.home, name='home'),

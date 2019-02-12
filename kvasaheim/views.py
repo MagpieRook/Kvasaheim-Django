@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from django.utils import timezone
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
 
 from .forms import AnswerForm
@@ -22,6 +23,10 @@ def home(request, title=None, cpk=None):
     return render(request, 'kvasaheim/home.html',
         {'realms': realms, 'title': title, 'categories': categories, 'cpk': cpk,
         'problems': problems})
+
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('kvasaheim:home'))
 
 def problem_detail(request, pk, ipk=None):
     if request.method == 'POST':
